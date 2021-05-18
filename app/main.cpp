@@ -16,7 +16,10 @@
  * Simple main program that demontrates how access
  * CMake definitions (here the version number) from source code.
  */
-int main() {
+int main()
+{
+
+  char menu;
   std::cout << "C++ Boiler Plate v"
             << PROJECT_VERSION_MAJOR
             << "."
@@ -28,8 +31,47 @@ int main() {
             << std::endl;
   std::system("cat ../LICENSE");
 
-  // Bring in the dummy class from the example source,
-  // just to show that it is accessible from main.cpp.
-  Dummy d = Dummy();
-  return d.doSomething() ? 0 : -1;
+  while (menu != 'k')
+  {
+
+    std::cout << "Wybierz jedna z dostepnych opcji: " << std::endl;
+    std::cout << "a - wybierz aktywnego drona" << std::endl;
+    std::cout << "p - zadaj parametry obrotu" << std::endl;
+    std::cout << "w - wyswietlenie wspolrzednych wierzcholkow" << std::endl;
+    std::cout << "m - wyswietl menu" << std::endl;
+    std::cout << "k - koniec dzialania programu" << std::endl;
+    std::cin >> menu;
+
+    switch (menu)
+    {
+    case 'a':
+    {
+
+      break;
+
+      break;
+    case 'p':
+    {
+    }
+    break;
+    case 'w':
+    {
+    }
+    break;
+    case 'm':
+      break;
+    case 'k':
+    {
+      std::cout << "Koniec dzialania programu." << std::endl;
+    }
+    break;
+    default:
+    {
+      std::cout << "Bledna opcja" << std::endl;
+    }
+    break;
+    }
+    }
+    return 0;
+  }
 }
