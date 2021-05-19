@@ -1,16 +1,19 @@
 #pragma once
 
-
 #include "Cuboid.hh"
 #include "Prism.hh"
 
 class Drone
 {
 int id;
-Vector<3> droga;
-Matrix<3> mac;
+Vector3D droga;
+Matrix3x3 mac;
 Cuboid  korpus;
-Prism wirniki[4];
+Prism rotor[4];
 public:
 
-}
+//Drone(int id=0);
+Drone ();
+void ruch(Vector<3>droga);
+void obrot(double kat);
+};
