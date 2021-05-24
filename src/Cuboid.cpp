@@ -50,6 +50,11 @@ std::ostream &operator<<(std::ostream &Strm,
     return Strm;
 }
 
+// void Cuboid::rysuj(PzG::LaczeDoGNUPlota &Lacze) {
+    
+// }
+
+
 /*Funkcja dodaje do prostopadłościanu wektor. Używana w translacji*/
 // Cuboid Cuboid::operator+(Vector3D wektor)
 // {

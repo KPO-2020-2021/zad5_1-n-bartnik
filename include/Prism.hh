@@ -19,6 +19,7 @@ public:
 
     Prism(Vector<3> pkt, double h, double w, double d);
     Vector<3> TransDoUklRodzica(const Vector <3> &pkt1) const;
+    //void rysuj(PzG::LaczeDoGNUPlota &Lacze);
 };
 
 std::ostream &operator<<(std::ostream &Strm, const Prism &Pr);

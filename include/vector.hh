@@ -15,7 +15,7 @@ public:
 
     Vector();
 
-    Vector(double size[SIZE])  ;
+    Vector(double tmp[SIZE])  ;
 
     Vector<SIZE> operator + (const Vector<SIZE> &v);
 

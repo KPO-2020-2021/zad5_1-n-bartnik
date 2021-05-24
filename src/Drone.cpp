@@ -1,5 +1,7 @@
 #include "Drone.hh"
-
+#include <cmath>
+#include <cassert>
+#include <unistd.h>
 
 /*Konstruktor parametryczny
 Argumenty:
@@ -15,3 +17,11 @@ Drone::Drone()
     rotor[2] = Prism(korpus[6], 3, 3, 3);
     rotor[3] = Prism(korpus[7], 3, 3, 3);
 }
+
+// void Drone:: rysuj(PzG::LaczeDoGNUPlota &Lacze) {
+//       korpus.rysuj(Lacze);
+//     (rotor[0]).rysuj(Lacze);
+//     (rotor[1]).rysuj(Lacze);
+//     (rotor[2]).rysuj(Lacze);
+//     (rotor[3]).rysuj(Lacze);
+// }

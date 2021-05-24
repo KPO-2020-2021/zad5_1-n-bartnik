@@ -12,10 +12,10 @@
 #include <fstream>
 #include <string>
 #include "lacze_do_gnuplota.hh"
-#include "Drone.hh"
 #include "exampleConfig.h"
-#include "../include/example.h"
-
+#include "example.h"
+#include "Cuboid.hh"
+#include "vector.hh"
 #define DL_KROTKI_BOK 100
 #define DL_DLUGI_BOK 150
 
@@ -82,58 +82,87 @@ bool PrzykladZapisuWspolrzednychDoPliku(const char *sNazwaPliku,
        return !StrmPlikowy.fail();
 }
 
-
 /*
  * Simple main program that demontrates how access
  * CMake definitions (here the version number) from source code.
  */
 int main()
 {
-  char menu;
+       // PzG::LaczeDoGNUPlota Lacze;
 
-Drone dron;
+       char menu = 'm';
+       // double tab[3] = {20, 30, 30};
 
-  while (menu != 'k')
-  {
+       Vector<3> wektor;
+       wektor[0]=0;
+       wektor[1]=0;
+       wektor[2]=0;
 
-    std::cout << "Wybierz jedna z dostepnych opcji: " << std::endl;
-    std::cout << "a - wybierz aktywnego drona" << std::endl;
-    std::cout << "p - zadaj parametry obrotu" << std::endl;
-    std::cout << "w - wyswietlenie wspolrzednych wierzcholkow" << std::endl;
-    std::cout << "m - wyswietl menu" << std::endl;
-    std::cout << "k - koniec dzialania programu" << std::endl;
-    std::cin >> menu;
+       Cuboid Pr(wektor, 50, 50, 50);
 
-    switch (menu)
-    {
-    case 'a':
-    {
+       std::cout << "Karol" << std::endl;
 
-      break;
+       PzG::LaczeDoGNUPlota Lacze;
 
-      break;
-    case 'p':
-    {
-    }
-    break;
-    case 'w':
-    {
-    }
-    break;
-    case 'm':
-      break;
-    case 'k':
-    {
-      std::cout << "Koniec dzialania programu." << std::endl;
-    }
-    break;
-    default:
-    {
-      std::cout << "Bledna opcja" << std::endl;
-    }
-    break;
-    }
-    }
-    return 0;
-  }
+       Lacze.DodajNazwePliku("../datasets/Cuboid.dat", PzG::RR_Ciagly, 2);
+       //
+       //  Ustawienie trybu rysowania 3D, tzn. rysowany zbiór punktów
+       //  znajduje się na wspólnej płaszczyźnie. Z tego powodu powoduj
+       //  jako wspolrzedne punktow podajemy x,y,z.
+       //
+       Lacze.ZmienTrybRys(PzG::TR_3D);
+       Lacze.Inicjalizuj();
+       // Ustawienie zakresow poszczegolnych osi
+       Lacze.UstawZakresY(-155, 155);
+       Lacze.UstawZakresX(-155, 155);
+       Lacze.UstawZakresZ(-155, 155);
+
+       PrzykladZapisuWspolrzednychDoPliku("../datasets/Cuboid.dat", Pr);
+       if (!PrzykladZapisuWspolrzednychDoPliku("../datasets/Cuboid.dat", Pr))
+              return 1;
+       Lacze.Rysuj(); // <- Tutaj gnuplot rysuje, to co zapisaliśmy do pliku
+       while (menu != 'k')
+       {
+
+              std::cout << "Wybierz jedna z dostepnych opcji: " << std::endl;
+              std::cout << "a - wybierz aktywnego drona" << std::endl;
+              std::cout << "p - zadaj parametry obrotu" << std::endl;
+              std::cout << "w - wyswietlenie wspolrzednych wierzcholkow" << std::endl;
+              std::cout << "m - wyswietl menu" << std::endl;
+              std::cout << "k - koniec dzialania programu" << std::endl;
+              std::cin >> menu;
+
+              switch (menu)
+              {
+              case 'a':
+              {
+
+                     break;
+
+                     break;
+              case 'p':
+              {
+              }
+              break;
+              case 'w':
+              {
+              }
+              break;
+              case 'm':
+                     break;
+              case 'k':
+              {
+                     std::cout << "Koniec dzialania programu." << std::endl;
+              }
+              break;
+              default:
+              {
+                     std::cout << "Bledna opcja" << std::endl;
+              }
+              break;
+              }
+              }
+
+              return 0;
+       }
 }

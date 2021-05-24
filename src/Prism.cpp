@@ -94,3 +94,7 @@ Prism :: Prism (Vector<3> pkt, double h, double w, double d)
 
 
 }
+
+// void rysuj(PzG::LaczeDoGNUPlota &Lacze) {
+    
+// }
