@@ -14,14 +14,15 @@
 using namespace std;
 class Cuboid : public GeoSolid
 {
-    // Vector<3> pkt;
-    // double kat_stopnie;
+    double katOrient;
 
 public:
     Cuboid(){};
     Cuboid(Vector<3> pkt, double h, double w, double d);
     // Vector<3> TransDoUklRodzica(const Vector<3> &pkt1) const;
     //void rysuj(PzG::LaczeDoGNUPlota &Lacze);
+    double StNaRad(double katOrient) {return katOrient*M_PI/180;}
+    Cuboid operator+(Vector<3> wektor);
 };
 
 std::ostream &operator<<(std::ostream &Strm,

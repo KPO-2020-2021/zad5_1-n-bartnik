@@ -16,6 +16,7 @@
 #include "example.h"
 #include "Cuboid.hh"
 #include "vector.hh"
+#include "Drone.hh"
 #define DL_KROTKI_BOK 100
 #define DL_DLUGI_BOK 150
 
@@ -88,19 +89,16 @@ bool PrzykladZapisuWspolrzednychDoPliku(const char *sNazwaPliku,
  */
 int main()
 {
-       // PzG::LaczeDoGNUPlota Lacze;
 
        char menu = 'm';
-       // double tab[3] = {20, 30, 30};
 
        Vector<3> wektor;
-       wektor[0]=0;
-       wektor[1]=0;
-       wektor[2]=0;
-
+       Vector<3> trans;
        Cuboid Pr(wektor, 50, 50, 50);
-
-       std::cout << "Karol" << std::endl;
+       Matrix3x3 macierz;
+       //double kat = 90;
+       Drone dron;
+       
 
        PzG::LaczeDoGNUPlota Lacze;
 
@@ -136,12 +134,13 @@ int main()
               {
               case 'a':
               {
+              }
+              break;
 
-                     break;
-
-                     break;
               case 'p':
               {
+                     cin>>wektor;
+                     dron.ruch(wektor);
               }
               break;
               case 'w':
@@ -161,8 +160,12 @@ int main()
               }
               break;
               }
-              }
-
-              return 0;
+              if (!PrzykladZapisuWspolrzednychDoPliku("../datasets/Cuboid.dat", Pr))
+                     return 1;
+              Lacze.Rysuj();
+              std::cout << "Naciśnij ENTER, aby kontynuowac" << std::endl;
+              std::cin.ignore(100000, '\n');
        }
+
+       return 0;
 }

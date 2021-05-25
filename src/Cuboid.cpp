@@ -4,12 +4,14 @@ using namespace std;
 /*Fuckja buduje prostopadłościan. Przyjmuje wektor zawierający współrzędne jednego z punktów.
 A następnie wysokość, długość przekatnej i długość prostopadłościanu (wpisywane standardowym wejściem).
 Na podstawie tych danych oblicza współrzędne pozostałych wierzchołków*/
-Cuboid::Cuboid(Vector<3> pkt, double h, double w, double d)
+Cuboid::Cuboid(Vector<3> pkt_cub, double h, double w, double d)
 {
-
+    pkt1.resize(8);
     for (int i = 0; i < 8; i++)
     {
-        pkt1[i] = pkt;
+        pkt1[i][0] = pkt_cub[0] - h / 2;
+        pkt1[i][1] = pkt_cub[1] - w / 2;
+        pkt1[i][2] = pkt_cub[2] - d / 2;
     }
 
     pkt1[1][0] += h;
@@ -30,6 +32,7 @@ Cuboid::Cuboid(Vector<3> pkt, double h, double w, double d)
 
     pkt1[7][0] += h;
     pkt1[7][2] += d;
+
 }
 
 /*FUnkcja wypisuje kolejne wierzchołki prostopadłościanu, zawiera dodatkowy warunek
@@ -41,9 +44,10 @@ std::ostream &operator<<(std::ostream &Strm,
     for (int i = 0; i < 8; i++)
     {
         Strm << Pr[i] << endl;
-        if((i+1)%2==0) {
-            Strm<<endl;
-        } 
+        if ((i + 1) % 2 == 0)
+        {
+            Strm << endl;
+        }
     }
     Strm << Pr[0] << endl;
     Strm << Pr[1] << endl;
@@ -51,20 +55,20 @@ std::ostream &operator<<(std::ostream &Strm,
 }
 
 // void Cuboid::rysuj(PzG::LaczeDoGNUPlota &Lacze) {
-    
-// }
 
+// }
 
 /*Funkcja dodaje do prostopadłościanu wektor. Używana w translacji*/
-// Cuboid Cuboid::operator+(Vector3D wektor)
-// {
-//     Cuboid wynik;
-//     for (int i = 0; i < 8; i++)
-//     {
-//         wynik[i] = pkt1[i] + wektor;
-//     }
-//     return wynik;
-// }
+Cuboid Cuboid::operator+(Vector<3> wektor)
+{
+    Cuboid wynik;
+    pkt1.resize(8);
+    for (int i = 0; i < 8; i++)
+    {
+        wynik[i] = pkt1[i] + wektor;
+    }
+    return wynik;
+}
 
 // /*Funkcja sprawdzająca odległosci boków*/
 // double Cuboid::odleglosci()

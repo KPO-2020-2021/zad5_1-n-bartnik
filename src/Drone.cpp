@@ -11,11 +11,18 @@ Zwraca:
 */
 Drone::Drone()
 {
-    korpus = Cuboid(droga, 10, 10, 10);
-    rotor[0] = Prism(korpus[4], 3, 3, 3);
-    rotor[1] = Prism(korpus[5], 3, 3, 3);
-    rotor[2] = Prism(korpus[6], 3, 3, 3);
-    rotor[3] = Prism(korpus[7], 3, 3, 3);
+    korpus = new Cuboid(droga, 10, 10, 10);
+    // rotor[0] = new Prism(korpus[4], 3, 3, 3);
+    // rotor[1] = new Prism(korpus[5], 3, 3, 3);
+    // rotor[2] = new Prism(korpus[6], 3, 3, 3);
+    // rotor[3] = new Prism(korpus[7], 3, 3, 3);
+}
+
+void Drone::ruch(Vector<3> droga)
+{
+    droga = droga;
+    this->droga = this->droga + droga;
+    *korpus = (*korpus) + this->droga;
 }
 
 // void Drone:: rysuj(PzG::LaczeDoGNUPlota &Lacze) {
