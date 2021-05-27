@@ -22,3 +22,14 @@ void GeoSolid::ObrotOZ (double katOZ, Matrix3x3 &macierz) {
     
 }
 
+// GeoSolid GeoSolid::operator+(Vector<3> wektor)
+// {
+//     Cuboid wynik;
+//     pkt1.resize(8);
+//     for (int i = 0; i < 8; i++)
+//     {
+//         wynik[i] = pkt1[i] + wektor;
+//     }
+//     return wynik;
+// }
+

@@ -12,7 +12,7 @@
 #include <string>
 
 using namespace std;
-class Cuboid : public GeoSolid
+class Cuboid: public GeoSolid
 {
     double katOrient;
 

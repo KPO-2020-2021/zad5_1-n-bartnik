@@ -18,11 +18,16 @@ Drone::Drone()
     // rotor[3] = new Prism(korpus[7], 3, 3, 3);
 }
 
-void Drone::ruch(Vector<3> droga)
+void Drone::ruch(Vector<3> droga, double katOZ, double katOY)
 {
-    droga = droga;
+    //droga = droga;
+    korpus->set_katOZ(katOZ);
+    korpus->set_katOY(katOY);
     this->droga = this->droga + droga;
-    *korpus = (*korpus) + this->droga;
+    korpus->ObrotOZ(katOZ, mac);
+    korpus->trans(droga);
+    
+
 }
 
 // void Drone:: rysuj(PzG::LaczeDoGNUPlota &Lacze) {
@@ -32,3 +37,28 @@ void Drone::ruch(Vector<3> droga)
 //     (rotor[2]).rysuj(Lacze);
 //     (rotor[3]).rysuj(Lacze);
 // }
+
+
+
+
+std::ostream &operator<<(std::ostream &Strm,
+                         /*const*/ Drone &dron)
+{
+
+    // Dron::korpus;
+
+    // Prostopadloscian korpus;
+    // Graniastoslup wirniki[4];
+
+
+    Strm << dron << endl;
+
+    // for (int i = 0; i < 4; i++)
+    // {
+    //     Strm << P << endl;
+    //     if ((i + 1) % 2 == 0)
+    //         Strm << endl;
+    // }
+
+    return Strm;
+}

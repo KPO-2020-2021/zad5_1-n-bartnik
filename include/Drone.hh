@@ -14,7 +14,9 @@ public:
 
 //Drone(int id=0);
 Drone ();
-void ruch(Vector<3>droga);
+void ruch(Vector<3>droga, double katOZ, double katOY);
 void obrot(double kat);
 
 };
+std::ostream &operator<<(std::ostream &Strm,
+                         /*const*/ Drone &dron);

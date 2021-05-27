@@ -23,9 +23,9 @@ public:
     Vector<3> &operator[](int Ind) { return pkt1[Ind]; } //wpisywanie
     void ObrotOZ(double katOZ, Matrix3x3 &macierz);
     void trans(const Vector<3> &vec);
-   
-      GeoSolid(){}
-      
+    //GeoSolid operator+(Vector<3> wektor);
+    GeoSolid() {}
+
     GeoSolid(const GeoSolid &Prost)
     {
         pkt1 = Prost.pkt1;
@@ -35,8 +35,7 @@ public:
         translacja = Prost.translacja;
     }
 
-
-    GeoSolid operator =(const GeoSolid &Prost)
+    GeoSolid operator=(const GeoSolid &Prost)
     {
         pkt1 = Prost.pkt1;
         srodek = Prost.srodek;
@@ -45,4 +44,7 @@ public:
         translacja = Prost.translacja;
         return *this;
     }
+
+    void set_katOZ(double kat) { katOZ = +kat; }
+    void set_katOY(double kat) { katOY = +kat; }
 };

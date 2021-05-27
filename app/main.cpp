@@ -96,7 +96,7 @@ int main()
        Vector<3> trans;
        Cuboid Pr(wektor, 50, 50, 50);
        Matrix3x3 macierz;
-       //double kat = 90;
+       double kat = 90, katY=0;
        Drone dron;
        
 
@@ -140,7 +140,7 @@ int main()
               case 'p':
               {
                      cin>>wektor;
-                     dron.ruch(wektor);
+                     dron.ruch(wektor, kat, katY);
               }
               break;
               case 'w':

@@ -58,7 +58,7 @@ std::ostream &operator<<(std::ostream &Strm,
 
 // }
 
-/*Funkcja dodaje do prostopadłościanu wektor. Używana w translacji*/
+// /*Funkcja dodaje do prostopadłościanu wektor. Używana w translacji*/
 Cuboid Cuboid::operator+(Vector<3> wektor)
 {
     Cuboid wynik;
