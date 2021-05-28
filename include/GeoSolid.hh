@@ -26,7 +26,7 @@ public:
     Vector<3> operator[](int Ind) const { return pkt1[Ind]; } //wypisywanie
 
     Vector<3> &operator[](int Ind) { return pkt1[Ind]; } //wpisywanie
-    void ObrotOZ(double katOZ, Matrix3x3 &macierz);
+    void ObrotOZ(double katOZ /*Matrix3x3 &macierz*/);
     void trans(const Vector<3> &vec);
     void zapis();
     //GeoSolid operator+(Vector<3> wektor);

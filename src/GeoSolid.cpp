@@ -1,6 +1,5 @@
 #include "GeoSolid.hh"
 
-
 /*FUnkjca trans realizuje translacje bryły geometrycznej
 Argumenty: 
 vec - wektor przesuniecia
@@ -13,35 +12,32 @@ void GeoSolid::trans(const Vector<3> &vec)
     }
 }
 
-void GeoSolid::ObrotOZ (double katOZ, Matrix3x3 &macierz) {
-    macierz=(macierz* macierz_obrot_z(katOZ));
-    for (int i=0; i<(int)pkt1.size(); i++) {
-        
-        pkt1[i] =macierz*pkt1[i];
+void GeoSolid::ObrotOZ(double katOZ /*Matrix3x3 &macierz*/)
+{
+    // macierz = (macierz * macierz_obrot_z(katOZ));
+    // for (int i = 0; i < (int)pkt1.size(); i++)
+    // {
+    //     macierz;
+
+    //     pkt1[i] = macierz * pkt1[i];
+    // }
+
+    for (int i = 0; i < (int)pkt1.size(); i++)
+    {
+        pkt1[i] = (macierz_obrot_z(katOZ)*((pkt1[i] ))) ;
     }
-    
 }
 
-void GeoSolid::zapis(){
+void GeoSolid::zapis()
+{
     ofstream plik;
     plik.open(NazwaPlikuPis);
-    for(int i=0; i<(int)pkt1.size(); i++)
+    for (int i = 0; i < (int)pkt1.size(); i++)
     {
-        if(i%2==0)
-        plik<<endl;
-        plik<<pkt1[i]<<endl;
+        if (i % 2 == 0)
+            plik << endl;
+        plik << pkt1[i] << endl;
     }
     plik.close();
 }
-
-// GeoSolid GeoSolid::operator+(Vector<3> wektor)
-// {
-//     Cuboid wynik;
-//     pkt1.resize(8);
-//     for (int i = 0; i < 8; i++)
-//     {
-//         wynik[i] = pkt1[i] + wektor;
-//     }
-//     return wynik;
-// }
 

@@ -25,14 +25,14 @@ void Drone::ruch(Vector<3> droga, double katOZ, double katOY)
     korpus->set_katOZ(katOZ);
     korpus->set_katOY(katOY);
     this->droga = this->droga + droga;
-    korpus->ObrotOZ(katOZ, mac);
+    korpus->ObrotOZ(katOZ);
     korpus->trans(droga);
     korpus->zapis();
     //std::cout << droga;
 }
 
 void Drone::ObrotDrona(double kat) {
-    korpus->ObrotOZ(kat, mac);
+    korpus->ObrotOZ(kat);
     korpus->zapis();
 }
 
@@ -78,7 +78,7 @@ void Drone::AnimacjaLotuDrona(PzG::LaczeDoGNUPlota &Lacze, double X, double Y)
     lot[0] = X / 50;
     lot[1] = Y / 50;
     cout << "Lot do przodu ... " << endl;
-    for (; x_dron <= 50; x_dron += 1 /*y_dron += 1*/)
+    for (; x_dron <= 50; x_dron += 1, y_dron += 1)
     {
 
         ruch(lot, 0, 0);
