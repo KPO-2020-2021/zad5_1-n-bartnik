@@ -4,10 +4,13 @@ using namespace std;
 /*Fuckja buduje prostopadłościan. Przyjmuje wektor zawierający współrzędne jednego z punktów.
 A następnie wysokość, długość przekatnej i długość prostopadłościanu (wpisywane standardowym wejściem).
 Na podstawie tych danych oblicza współrzędne pozostałych wierzchołków*/
-Cuboid::Cuboid(Vector<3> pkt_cub, double h, double w, double d)
+Cuboid::Cuboid(Vector<3> pkt_cub, double h, double w, double d, string NazwaPlikuCzyt, string NazwaPLikuPis)
 {
-    pkt1.resize(8);
-    for (int i = 0; i < 8; i++)
+    ofstream NazwaPliku;
+    this->NazwaPlikuCzyt = NazwaPlikuCzyt;
+    this->NazwaPlikuPis = NazwaPLikuPis;
+    pkt1.resize(10);
+    for (int i = 0; i < 10; i++)
     {
         pkt1[i][0] = pkt_cub[0] - h / 2;
         pkt1[i][1] = pkt_cub[1] - w / 2;
@@ -33,6 +36,28 @@ Cuboid::Cuboid(Vector<3> pkt_cub, double h, double w, double d)
     pkt1[7][0] += h;
     pkt1[7][2] += d;
 
+    // pkt1[1][0];
+
+    // pkt1[2][1];
+
+    // pkt1[3][0];
+    // pkt1[3][1];
+
+    // pkt1[4][1];
+    // pkt1[4][2];
+
+    // pkt1[5][0];
+
+
+    ofstream plik;
+    plik.open(NazwaPLikuPis);
+    for (int i = 0; i < (int)pkt1.size(); i++)
+    {
+        if (i % 2 == 0)
+            plik << endl;
+        plik << pkt1[i] << endl; //robie enter co 2 linie
+    }
+    plik.close();
 }
 
 /*FUnkcja wypisuje kolejne wierzchołki prostopadłościanu, zawiera dodatkowy warunek
@@ -51,6 +76,7 @@ std::ostream &operator<<(std::ostream &Strm,
     }
     Strm << Pr[0] << endl;
     Strm << Pr[1] << endl;
+    Strm << Pr[2] << endl;
     return Strm;
 }
 

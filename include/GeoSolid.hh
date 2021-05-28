@@ -2,6 +2,8 @@
 #pragma once
 using namespace std;
 #include <vector>
+#include <fstream>
+#include <string>
 #include "matrix.hh"
 #include "vector.hh"
 #include "size.hh"
@@ -15,6 +17,9 @@ protected:
     Vector<3> srodek;
     double katOZ;
     double katOY;
+    string NazwaPlikuCzyt;
+    string NazwaPlikuPis;
+
     Vector<3> translacja;
 
 public:
@@ -23,6 +28,7 @@ public:
     Vector<3> &operator[](int Ind) { return pkt1[Ind]; } //wpisywanie
     void ObrotOZ(double katOZ, Matrix3x3 &macierz);
     void trans(const Vector<3> &vec);
+    void zapis();
     //GeoSolid operator+(Vector<3> wektor);
     GeoSolid() {}
 

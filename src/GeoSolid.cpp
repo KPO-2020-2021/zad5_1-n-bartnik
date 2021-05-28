@@ -22,6 +22,18 @@ void GeoSolid::ObrotOZ (double katOZ, Matrix3x3 &macierz) {
     
 }
 
+void GeoSolid::zapis(){
+    ofstream plik;
+    plik.open(NazwaPlikuPis);
+    for(int i=0; i<(int)pkt1.size(); i++)
+    {
+        if(i%2==0)
+        plik<<endl;
+        plik<<pkt1[i]<<endl;
+    }
+    plik.close();
+}
+
 // GeoSolid GeoSolid::operator+(Vector<3> wektor)
 // {
 //     Cuboid wynik;

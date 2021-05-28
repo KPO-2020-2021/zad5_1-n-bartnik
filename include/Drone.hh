@@ -16,7 +16,10 @@ public:
 Drone ();
 void ruch(Vector<3>droga, double katOZ, double katOY);
 void obrot(double kat);
-
+void ZapisWspolrzednychDoStrumieniaProstopadloscianu(std::ostream &Strm, Matrix3x3 &mac, Vector<3> &droga, Cuboid &korpus);
+void ZapisWspolrzednychDoStrumieniaProstopadloscianu(std::ostream &Strm, Vector<3> &droga, Cuboid &korpus);
+bool ZapisWspolrzednychDoPlikuProstopadloscianu(const char *NazwaPliku, Matrix3x3 &mac, Vector<3> &droga, Cuboid &korpus);
+bool ZapisWspolrzednychDoPlikuProstopadloscianu(const char *NazwaPliku, Vector<3> &droga, Cuboid &korpus);
 };
 std::ostream &operator<<(std::ostream &Strm,
-                         /*const*/ Drone &dron);
+                         Drone &dron);

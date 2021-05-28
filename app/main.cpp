@@ -35,35 +35,6 @@
  * \retval false - w przypadku przeciwnym.
  */
 
-void PrzykladZapisuWspolrzednychDoStrumienia(std::ostream &StrmWy,
-                                             double Przesuniecie)
-{
-       //----------------------------------------------std::
-       //
-       double x1, y1, x2, y2, x3, y3, x4, y4;
-
-       x1 = y1 = 10;
-       x2 = x1 + DL_DLUGI_BOK;
-       y2 = y1;
-       x3 = x2;
-       y3 = y2 + DL_KROTKI_BOK;
-       x4 = x3 - DL_DLUGI_BOK;
-       y4 = y3;
-
-       StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << x1 + Przesuniecie
-              << std::setw(16) << std::fixed << std::setprecision(10) << y1 + Przesuniecie << std::endl;
-       StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << x2 + Przesuniecie
-              << std::setw(16) << std::fixed << std::setprecision(10) << y2 + Przesuniecie << std::endl;
-       StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << x3 + Przesuniecie
-              << std::setw(16) << std::fixed << std::setprecision(10) << y3 + Przesuniecie << std::endl;
-       StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << x4 + Przesuniecie
-              << std::setw(16) << std::fixed << std::setprecision(10) << y4 + Przesuniecie << std::endl;
-       StrmWy << std::setw(16) << std::fixed << std::setprecision(10) << x1 + Przesuniecie
-              << std::setw(16) << std::fixed << std::setprecision(10) << y1 + Przesuniecie << std::endl;
-       /*Jeszcze raz zapisujemy pierwszy punkt,
-       aby gnuplot narysowal zamkniętą linię.*/
-}
-
 bool PrzykladZapisuWspolrzednychDoPliku(const char *sNazwaPliku,
                                         Cuboid Pr)
 {
@@ -89,20 +60,20 @@ bool PrzykladZapisuWspolrzednychDoPliku(const char *sNazwaPliku,
  */
 int main()
 {
-
+       std::ofstream StrmWy;
        char menu = 'm';
 
        Vector<3> wektor;
        Vector<3> trans;
-       Cuboid Pr(wektor, 50, 50, 50);
+       Cuboid Pr(wektor, 20, 20, 50, "../datasets/Cuboid.dat", "../datasets/Cuboid.dat");
        Matrix3x3 macierz;
-       double kat = 90, katY=0;
+       double kat = 45, katY = 0;
        Drone dron;
-       
 
        PzG::LaczeDoGNUPlota Lacze;
 
-       Lacze.DodajNazwePliku("../datasets/Cuboid.dat", PzG::RR_Ciagly, 2);
+       //Lacze.DodajNazwePliku("../datasets/Cuboid.dat", PzG::RR_Ciagly, 2);
+       Lacze.DodajNazwePliku("../datasets/Drone.dat", PzG::RR_Ciagly, 2);
        //
        //  Ustawienie trybu rysowania 3D, tzn. rysowany zbiór punktów
        //  znajduje się na wspólnej płaszczyźnie. Z tego powodu powoduj
@@ -115,9 +86,7 @@ int main()
        Lacze.UstawZakresX(-155, 155);
        Lacze.UstawZakresZ(-155, 155);
 
-       PrzykladZapisuWspolrzednychDoPliku("../datasets/Cuboid.dat", Pr);
-       if (!PrzykladZapisuWspolrzednychDoPliku("../datasets/Cuboid.dat", Pr))
-              return 1;
+       dron.ZapisWspolrzednychDoPlikuProstopadloscianu("../datasets/Cuboid.dat", trans, Pr);
        Lacze.Rysuj(); // <- Tutaj gnuplot rysuje, to co zapisaliśmy do pliku
        while (menu != 'k')
        {
@@ -139,7 +108,7 @@ int main()
 
               case 'p':
               {
-                     cin>>wektor;
+                     cin >> wektor;
                      dron.ruch(wektor, kat, katY);
               }
               break;
@@ -160,9 +129,9 @@ int main()
               }
               break;
               }
-              if (!PrzykladZapisuWspolrzednychDoPliku("../datasets/Cuboid.dat", Pr))
-                     return 1;
+
               Lacze.Rysuj();
+              std::cout << "Twoja stara" << std::endl;
               std::cout << "Naciśnij ENTER, aby kontynuowac" << std::endl;
               std::cin.ignore(100000, '\n');
        }

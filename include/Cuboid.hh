@@ -18,7 +18,7 @@ class Cuboid: public GeoSolid
 
 public:
     Cuboid(){};
-    Cuboid(Vector<3> pkt, double h, double w, double d);
+    Cuboid(Vector<3> pkt, double h, double w, double d, string NazwaPlikuCzyt, string NazwaPlikuPis);
     // Vector<3> TransDoUklRodzica(const Vector<3> &pkt1) const;
     //void rysuj(PzG::LaczeDoGNUPlota &Lacze);
     double StNaRad(double katOrient) {return katOrient*M_PI/180;}

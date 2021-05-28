@@ -11,7 +11,8 @@ Zwraca:
 */
 Drone::Drone()
 {
-    korpus = new Cuboid(droga, 10, 10, 10);
+
+    korpus = new Cuboid(droga, 50, 50, 50,"../datasets/Cuboid.dat", "../datasets/Drone.dat");
     // rotor[0] = new Prism(korpus[4], 3, 3, 3);
     // rotor[1] = new Prism(korpus[5], 3, 3, 3);
     // rotor[2] = new Prism(korpus[6], 3, 3, 3);
@@ -26,6 +27,8 @@ void Drone::ruch(Vector<3> droga, double katOZ, double katOY)
     this->droga = this->droga + droga;
     korpus->ObrotOZ(katOZ, mac);
     korpus->trans(droga);
+    korpus->zapis();
+    std::cout<<droga;
     
 
 }
@@ -39,26 +42,55 @@ void Drone::ruch(Vector<3> droga, double katOZ, double katOY)
 // }
 
 
+// void Drone::ZapisWspolrzednychDoStrumieniaProstopadloscianu(std::ostream &Strm, Matrix3x3 &mac, Vector<3> &droga, Cuboid &korpus) {
+//     for (int i = 0; i < 8; ++i)
+//     {
+//         korpus[i] = korpus[i] - droga;
+//     }
+//     for (int i = 0; i < 8; ++i)
+//     {
+//         korpus[i] = mac * korpus[i];
+//     }
+//     for (int i = 0; i < 8; ++i)
+//     {
+//         korpus[i] = korpus[i] + droga;
+//     }
+//     Strm << korpus << std::endl;
+// }
 
+// void Drone::ZapisWspolrzednychDoStrumieniaProstopadloscianu(std::ostream &Strm, Vector<3> &droga, Cuboid &korpus){
+//     for (int i = 0; i < 8; ++i)
+//     {
+//         korpus[i] = korpus[i] + droga;
+//     }
+//     Strm << korpus << std::endl;
+// }
 
-std::ostream &operator<<(std::ostream &Strm,
-                         /*const*/ Drone &dron)
-{
+// bool Drone::ZapisWspolrzednychDoPlikuProstopadloscianu(const char *NazwaPliku, Matrix3x3 &mac, Vector<3> &droga, Cuboid &korpus) {
+//     std::ofstream StrmPlikowy;
+//     StrmPlikowy.open(NazwaPliku);
+//     if (!StrmPlikowy.is_open())
+//     {
+//         std::cerr << ":(  Operacja otwarcia do zapisu \"" << NazwaPliku << "\"" << std::endl
+//                   << ":(  nie powiodla sie." << std::endl;
+//         return false;
+//     }
+//     ZapisWspolrzednychDoStrumieniaProstopadloscianu(StrmPlikowy, mac, droga, korpus);
 
-    // Dron::korpus;
+//     StrmPlikowy.close();
+//     return !StrmPlikowy.fail();
+// }
+// bool Drone::ZapisWspolrzednychDoPlikuProstopadloscianu(const char *NazwaPliku, Vector<3> &droga, Cuboid &korpus) {
+//     std::ofstream StrmPlikowy;
+//     StrmPlikowy.open(NazwaPliku);
+//     if (!StrmPlikowy.is_open())
+//     {
+//         std::cerr << ":(  Operacja otwarcia do zapisu \"" << NazwaPliku << "\"" << std::endl
+//                   << ":(  nie powiodla sie." << std::endl;
+//         return false;
+//     }
+//     ZapisWspolrzednychDoStrumieniaProstopadloscianu(StrmPlikowy, droga, korpus);
 
-    // Prostopadloscian korpus;
-    // Graniastoslup wirniki[4];
-
-
-    Strm << dron << endl;
-
-    // for (int i = 0; i < 4; i++)
-    // {
-    //     Strm << P << endl;
-    //     if ((i + 1) % 2 == 0)
-    //         Strm << endl;
-    // }
-
-    return Strm;
-}
+//     StrmPlikowy.close();
+//     return !StrmPlikowy.fail();
+// }
