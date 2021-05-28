@@ -14,13 +14,6 @@ void GeoSolid::trans(const Vector<3> &vec)
 
 void GeoSolid::ObrotOZ(double katOZ /*Matrix3x3 &macierz*/)
 {
-    // macierz = (macierz * macierz_obrot_z(katOZ));
-    // for (int i = 0; i < (int)pkt1.size(); i++)
-    // {
-    //     macierz;
-
-    //     pkt1[i] = macierz * pkt1[i];
-    // }
 
     for (int i = 0; i < (int)pkt1.size(); i++)
     {
