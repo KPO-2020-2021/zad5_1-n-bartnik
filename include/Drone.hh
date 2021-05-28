@@ -20,6 +20,8 @@ void ZapisWspolrzednychDoStrumieniaProstopadloscianu(std::ostream &Strm, Matrix3
 void ZapisWspolrzednychDoStrumieniaProstopadloscianu(std::ostream &Strm, Vector<3> &droga, Cuboid &korpus);
 bool ZapisWspolrzednychDoPlikuProstopadloscianu(const char *NazwaPliku, Matrix3x3 &mac, Vector<3> &droga, Cuboid &korpus);
 bool ZapisWspolrzednychDoPlikuProstopadloscianu(const char *NazwaPliku, Vector<3> &droga, Cuboid &korpus);
+void AnimacjaLotuDrona(PzG::LaczeDoGNUPlota &Lacze, double X, double Y);
+void ObrotDrona(double kat);
 };
 std::ostream &operator<<(std::ostream &Strm,
                          Drone &dron);
