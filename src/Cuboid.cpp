@@ -9,8 +9,9 @@ Cuboid::Cuboid(Vector<3> pkt_cub, double h, double w, double d, string NazwaPlik
     ofstream NazwaPliku;
     this->NazwaPlikuCzyt = NazwaPlikuCzyt;
     this->NazwaPlikuPis = NazwaPLikuPis;
-    pkt1.resize(10);
-    for (int i = 0; i < 10; i++)
+    pkt1.resize(8);
+    //Ustalanie środka
+    for (int i = 0; i < 8; i++)
     {
         pkt1[i][0] = pkt_cub[0] - h / 2;
         pkt1[i][1] = pkt_cub[1] - w / 2;
@@ -36,17 +37,6 @@ Cuboid::Cuboid(Vector<3> pkt_cub, double h, double w, double d, string NazwaPlik
     pkt1[7][0] += h;
     pkt1[7][2] += d;
 
-    // pkt1[1][0];
-
-    // pkt1[2][1];
-
-    // pkt1[3][0];
-    // pkt1[3][1];
-
-    // pkt1[4][1];
-    // pkt1[4][2];
-
-    // pkt1[5][0];
 
 
     ofstream plik;
@@ -55,7 +45,8 @@ Cuboid::Cuboid(Vector<3> pkt_cub, double h, double w, double d, string NazwaPlik
     {
         if (i % 2 == 0)
             plik << endl;
-        plik << pkt1[i] << endl; //robie enter co 2 linie
+            /*przerwa w wypisywaniu co 2 linia*/
+        plik << pkt1[i] << endl;
     }
     plik.close();
 }

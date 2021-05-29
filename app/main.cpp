@@ -17,13 +17,14 @@
 #include "Cuboid.hh"
 #include "vector.hh"
 #include "Drone.hh"
+#include "Scene.hh"
 #define DL_KROTKI_BOK 100
 #define DL_DLUGI_BOK 150
 
 /*!
  * Przyklad zapisu wspolrzednych zbioru punktow do strumienia wyjściowego.
  * Dane sa odpowiednio sformatowane, tzn. przyjęto notację stałoprzecinkową
- * z dokładnością do 10 miejsca po przecinku. Szerokość wyświetlanego pola 
+ * z dokłaScenaścią do 10 miejsca po przecinku. Szerokość wyświetlanego pola 
  * to 16 miejsc, sposób wyrównywania - do prawej strony.
  * \param[in] StrmWy - strumien wyjsciowy, do ktorego maja zostac zapisane
  *                     kolejne wspolrzedne.
@@ -54,10 +55,6 @@ bool PrzykladZapisuWspolrzednychDoPliku(const char *sNazwaPliku,
        return !StrmPlikowy.fail();
 }
 
-/*
- * Simple main program that demontrates how access
- * CMake definitions (here the version number) from source code.
- */
 int main()
 {
        std::ofstream StrmWy;
@@ -65,15 +62,15 @@ int main()
 
        Vector<3> wektor;
        Vector<3> trans;
-       Cuboid Pr(wektor, 20, 20, 50, "../datasets/Cuboid.dat", "../datasets/Cuboid.dat");
+       Cuboid Pr(wektor, 20, 20, 80, "../datasets/Cuboid.dat", "../datasets/Cuboid.dat");
        Matrix3x3 macierz;
-       double kat = 45, katY = 0;
        Drone dron;
 
        PzG::LaczeDoGNUPlota Lacze;
 
-       //Lacze.DodajNazwePliku("../datasets/Cuboid.dat", PzG::RR_Ciagly, 2);
        Lacze.DodajNazwePliku("../datasets/Drone.dat", PzG::RR_Ciagly, 2);
+       Lacze.DodajNazwePliku("../datasets/Scena.dat", PzG::RR_Ciagly, 2);
+       Lacze.DodajNazwePliku("../datasets/Scena2.dat", PzG::RR_Ciagly, 2);
        //
        //  Ustawienie trybu rysowania 3D, tzn. rysowany zbiór punktów
        //  znajduje się na wspólnej płaszczyźnie. Z tego powodu powoduj
@@ -84,10 +81,10 @@ int main()
        // Ustawienie zakresow poszczegolnych osi
        Lacze.UstawZakresY(-155, 155);
        Lacze.UstawZakresX(-155, 155);
-       Lacze.UstawZakresZ(-155, 155);
-
-       dron.ZapisWspolrzednychDoPlikuProstopadloscianu("../datasets/Cuboid.dat", trans, Pr);
-       Lacze.Rysuj(); // <- Tutaj gnuplot rysuje, to co zapisaliśmy do pliku
+       Lacze.UstawZakresZ(-20, 155);
+       Scene Scena(300, 300, 0, "../datasets/Scena.dat", "../datasets/Scena2.dat");
+       Scena.zapis();
+       Lacze.Rysuj();
        while (menu != 'k')
        {
 
@@ -108,8 +105,8 @@ int main()
 
               case 'p':
               {
-                     cin >> wektor;
-                     dron.ruch(wektor, kat, katY);
+                     //cin >> wektor;
+                     dron.AnimacjaLotuDrona(Lacze, 100, 100);
               }
               break;
               case 'w':
@@ -131,7 +128,6 @@ int main()
               }
 
               Lacze.Rysuj();
-              std::cout << "Twoja stara" << std::endl;
               std::cout << "Naciśnij ENTER, aby kontynuowac" << std::endl;
               std::cin.ignore(100000, '\n');
        }

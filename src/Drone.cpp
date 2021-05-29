@@ -12,26 +12,21 @@ Zwraca:
 Drone::Drone()
 {
     droga[2] = 30.0;
-    korpus = new Cuboid(droga, 50, 50, 50, "../datasets/Cuboid.dat", "../datasets/Drone.dat");
-    // rotor[0] = new Prism(korpus[4], 3, 3, 3);
-    // rotor[1] = new Prism(korpus[5], 3, 3, 3);
-    // rotor[2] = new Prism(korpus[6], 3, 3, 3);
-    // rotor[3] = new Prism(korpus[7], 3, 3, 3);
+    korpus = new Cuboid(droga, 50, 50, 30, "../datasets/Cuboid.dat", "../datasets/Drone.dat");
 }
 
 void Drone::ruch(Vector<3> droga, double katOZ, double katOY)
 {
-    //droga = droga;
     korpus->set_katOZ(katOZ);
     korpus->set_katOY(katOY);
     this->droga = this->droga + droga;
     korpus->ObrotOZ(katOZ);
     korpus->trans(droga);
     korpus->zapis();
-    //std::cout << droga;
 }
 
-void Drone::ObrotDrona(double kat) {
+void Drone::ObrotDrona(double kat)
+{
     korpus->ObrotOZ(kat);
     korpus->zapis();
 }
@@ -51,8 +46,6 @@ void Drone::AnimacjaLotuDrona(PzG::LaczeDoGNUPlota &Lacze, double X, double Y)
     for (; z_dron <= 80; z_dron += 2)
     {
         ruch(wznoszenie, 0, 0);
-        // if (!PrzemiescDrona(KatOr_st,x_dron,y_dron,z_dron))
-        //     return false;
         usleep(100000); // 0.1 ms
         Lacze.Rysuj();
     }
@@ -63,9 +56,6 @@ void Drone::AnimacjaLotuDrona(PzG::LaczeDoGNUPlota &Lacze, double X, double Y)
     {
 
         ObrotDrona(5);
-        // if (!PrzemiescDrona(KatOr_st,x_dron,y_dron,z_dron))
-        //     return false;
-
         usleep(100000);
         Lacze.Rysuj();
     }
@@ -82,9 +72,6 @@ void Drone::AnimacjaLotuDrona(PzG::LaczeDoGNUPlota &Lacze, double X, double Y)
     {
 
         ruch(lot, 0, 0);
-        // if (!PrzemiescDrona(KatOr_st,x_dron,y_dron,z_dron))
-        //     return false;
-
         usleep(100000);
         Lacze.Rysuj();
     }
@@ -100,9 +87,6 @@ void Drone::AnimacjaLotuDrona(PzG::LaczeDoGNUPlota &Lacze, double X, double Y)
     {
 
         ruch(opadanie, 0, 0);
-        // if (!PrzemiescDrona(KatOr_st,x_dron,y_dron,z_dron))
-        //     return false;
-
         usleep(100000); // 0.1 ms
         Lacze.Rysuj();
     }
