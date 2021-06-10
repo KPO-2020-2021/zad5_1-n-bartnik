@@ -5,7 +5,7 @@ Prism ::Prism(Vector<3> srodek, double z, double r, string nazwa)
   
     double tab[] = {0, 0, z};
     wymiary = new Vector3D(tab);
-    this->NazwaPlikuPis = NazwaPlikuPis;
+    this->NazwaPlikuPis = nazwa;
     this->srodek = srodek;
     Vector3D pkt;
     for (int i = 0; i < 360; i += 60)
