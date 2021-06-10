@@ -4,19 +4,47 @@
 #include "size.hh"
 #include <iostream>
 #include <cmath>
+using namespace std;
 template <int SIZE>
 class Vector {
 
 private:
+static int suma;
+static int aktualnie;
 
     double size[SIZE];     //Tablica wektora
 
 public:
 
     Vector();
+Vector( Vector<SIZE>& wek){
+    for(int i=0; i<SIZE; i++)
+    size[i]=wek.size[i];
+    aktualnie++;}
 
-    Vector(double tmp[SIZE])  ;
+constexpr Vector(const Vector &other)
+    {
+        for (int i = 0; i < SIZE; i++)
+            size[i] = other.size[i];
+        aktualnie++;
+    }
 
+    Vector<3>& operator=(const Vector<3>& wek){
+    for(int i=0; i<SIZE; i++)
+    size[i]=wek.size[i];
+    return *this;
+    }
+
+Vector &operator=(const float &other)
+    {
+        for (int i = 0; i < SIZE; i++)
+            size[i] = other;
+        return *this;
+    }
+
+    Vector(double tmp[SIZE]);
+
+~Vector();
     Vector<SIZE> operator + (const Vector<SIZE> &v);
 
     Vector<SIZE> operator - (const Vector<SIZE> &v);
@@ -29,11 +57,14 @@ public:
 
     double &operator [] (int index);
     bool operator==(Vector<SIZE> wek) const;
-    double odleglosc (Vector<SIZE> wek);
+
+    void zliczanie();
 
 };
-
-
+template <int SIZE>
+int Vector<SIZE>::suma=0;
+template <int SIZE>
+int Vector<SIZE>::aktualnie=0;
 
 
 /******************************************************************************
@@ -48,9 +79,13 @@ Vector<SIZE>::Vector()
 {
     for (int i = 0; i < SIZE; ++i)
     {
+        aktualnie++;
+        suma++;
         size[i] = 0;
     }
 }
+
+
 
 /******************************************************************************
  |  Konstruktor klasy Vector<SIZE>.                                                 |
@@ -64,8 +99,15 @@ Vector<SIZE>::Vector(double size[SIZE])
 {
      for (int i = 0; i < SIZE; ++i)
     {
+        aktualnie++;
+        suma++;
         this->size[i] = size[i];
     }
+}
+
+template <int SIZE>
+Vector<SIZE>::~Vector(){
+    aktualnie--;
 }
 
 /******************************************************************************
@@ -83,10 +125,15 @@ Vector<SIZE> Vector<SIZE>::operator+(const Vector<SIZE> &v)
     Vector<SIZE> result;
     for (int i = 0; i < SIZE; ++i)
     {
-        result[i] = size[i] += v[i];
+        result[i] = size[i] + v[i];
     }
     return result;
 }
+template <int SIZE>
+void Vector<SIZE>::zliczanie(){
+        cout<<"Aktualna liczba wektorów: "<< aktualnie<<endl;
+        cout<<"Wszystkie wektory: "<<suma<<endl;
+    }
 
 /******************************************************************************
  |  Realizuje odejmowanie dwoch wektorow.                                     |
@@ -103,7 +150,7 @@ Vector<SIZE> Vector<SIZE>::operator-(const Vector<SIZE> &v)
     Vector<SIZE> result;
     for (int i = 0; i < SIZE; ++i)
     {
-        result[i] = size[i] -= v[i];
+        result[i] = size[i] - v[i];
     }
     return result;
 }
@@ -231,15 +278,3 @@ bool Vector<SIZE>::operator==(Vector<SIZE> wek) const
     return true;
 }
 
-
-// template <int SIZE>
-// double Vector<SIZE>::odleglosc(Vector<SIZE> wek)
-// {     /* dY, dX - odleglosci bokow */
-//     double wynik, suma=0;
-//     for(int i=0; i<SIZE; i++){
-//     suma += pow(this->size[i] - wek[i],2);
-    
-//     }
-//     wynik = sqrt(suma); /* liczy pierwiastek z sumy kwadratów odległosći */
-//     return wynik;
-// }
