@@ -1,93 +1,205 @@
+
 #include "Drone.hh"
-#include <cmath>
-#include <cassert>
-#include <unistd.h>
 
-/*Konstruktor parametryczny
-Argumenty:
-- korpus, rotor - składowe drona. Korpus - cviało drona, rotor - pojedynczy wirnik
-Zwraca:
-
-*/
-Drone::Drone()
+Drone::Drone(int index, PzG::LaczeDoGNUPlota &Lacze, Vector3D pozycja) : Lacze(Lacze)
 {
-    droga[2] = 30.0;
-    korpus = new Cuboid(droga, 50, 50, 30, "../datasets/Cuboid.dat", "../datasets/Drone.dat");
+    kat = 0;
+    this->index = index;
+    orginal.ustaw_nazwe("../datasets/korpus" + std::to_string(index) + ".dat");
+
+    for (int i = 0; i < 4; i++)
+        orginal_wirnika[i].ustaw_nazwe("../datasets/wirnik" + std::to_string(i) + std::to_string(index) + ".dat");
+
+    Lacze.DodajNazwePliku(orginal.wez_nazwe().c_str(), PzG::RR_Ciagly, 2);
+    for (int i = 0; i < 4; i++)
+        Lacze.DodajNazwePliku(orginal_wirnika[i].wez_nazwe().c_str(), PzG::RR_Ciagly, 2);
+    kopia = orginal;
+
+    kopia.przesun(pozycja);
+    for (int i = 0; i < 4; i++)
+        kopia_wirnika[i] = orginal_wirnika[i];
+
+    for (int i = 0; i < 4; i++)
+        kopia_wirnika[i].przesun(orginal[i * 2] + pozycja);
+
+    this->droga = this->droga + pozycja;
 }
 
-void Drone::ruch(Vector<3> droga, double katOZ, double katOY)
+void Drone::animacja(double droga)
 {
-    korpus->set_katOZ(katOZ);
-    korpus->set_katOY(katOY);
-    this->droga = this->droga + droga;
-    korpus->ObrotOZ(katOZ);
-    korpus->trans(droga);
-    korpus->zapis();
+    Vector3D droga_o;
+    droga_o[2] = droga;
+
+    this->droga = this->droga + droga_o;
+    kopia.obrot(obr);
+    kopia.przesun(this->droga);
 }
 
-void Drone::ObrotDrona(double kat)
+void Drone::przesun(double droga)
 {
-    korpus->ObrotOZ(kat);
-    korpus->zapis();
+    Vector3D droga_o;
+    droga_o[0] = droga * cos(kat * M_PI / 180);
+    droga_o[1] = droga * sin(kat * M_PI / 180);
+    this->droga = this->droga + droga_o;
+    kopia.obrot(obr);
+    kopia.przesun(this->droga);
 }
 
-void Drone::AnimacjaLotuDrona(PzG::LaczeDoGNUPlota &Lacze, double X, double Y)
+void Drone::obrot(double kat)
 {
-    double x_dron = 20, y_dron = 20, z_dron = 0;
-    double KatOr_st = 0;
+    this->kat += kat;
+    Matrix3x3 nowa;
+    obr = nowa * macierz_obrot_z(this->kat);
+    kopia.obrot(obr);
+    kopia.przesun(this->droga);
+}
+void Drone::obrot_rotrow()
+{
+    static int kat = 0;
+    kat += 3;
+    if (kat == 360)
+        kat = 0;
 
-    //-------------------------------------
-    // Wznoszenie ...
-    //
-    Vector<3> wznoszenie;
-    wznoszenie[2] = 2;
-    cout << endl
-         << "Wznoszenie ... " << endl;
-    for (; z_dron <= 80; z_dron += 2)
+    Matrix3x3 nowa;
+    nowa = nowa * macierz_obrot_z(kat);
+    for (int i = 0; i < 4; i++)
     {
-        ruch(wznoszenie, 0, 0);
-        usleep(100000); // 0.1 ms
-        Lacze.Rysuj();
+        kopia_wirnika[i].obrot(nowa);
     }
 
-    z_dron -= 2;
-    cout << "Zmiana orientacji ... " << endl;
-    for (; KatOr_st <= 45; KatOr_st += 5)
+    for (int i = 0; i < 4; i++)
+    {
+        kopia_wirnika[i].przesun(kopia[i * 2]);
+    }
+}
+
+void Drone::zapisz()
+{
+    kopia.zapisz();
+    for (int i = 0; i < 4; i++)
+        kopia_wirnika[i].zapisz();
+}
+
+void Drone::sterowanie()
+{
+    double droga;
+    double kat;
+    char opcja;
+
+    zapisz();
+    cout << "Wybierz opcje :";
+    cout << "p - przesun drona o zadany wektor"<<endl;
+    cout << "o - obroc drona o zadany kat (w stopniach)"<<endl;
+    cout << "m - menu"<<endl;
+    cin >> opcja;
+    switch (opcja)
+    {
+    case 'p':
+        cout << "Podaj wektor przelotu :";
+        cin >> droga;
+        prosta(droga);
+        Lacze.DodajNazwePliku("../datasets/droga.dat", PzG::RR_Ciagly, 2);
+        for (int i = 0; i < 100; i++)
+        {
+            kopia = orginal;
+            for (int j = 0; j < 4; j++)
+                kopia_wirnika[j] = orginal_wirnika[j];
+            animacja(1);
+           obrot_rotrow();
+            zapisz();
+            Lacze.Rysuj();
+            usleep(CZAS);
+        }
+
+        for (int i = 0; i < droga; i++)
+        {
+            kopia = orginal;
+            for (int j = 0; j < 4; j++)
+                kopia_wirnika[j] = orginal_wirnika[j];
+            przesun(1);
+            obrot_rotrow();
+            zapisz();
+            Lacze.Rysuj();
+            usleep(CZAS);
+        }
+
+        for (int i = 0; i < 100; i++)
+        {
+            kopia = orginal;
+            for (int j = 0; j < 4; j++)
+                kopia_wirnika[j] = orginal_wirnika[j];
+            animacja(-1);
+          obrot_rotrow();
+            zapisz();
+            Lacze.Rysuj();
+            usleep(CZAS);
+        }
+        Lacze.UsunOstatniaNazwe();
+        break;
+    case 'o':
+        cout << "Podaj kat obrotu:";
+        cin >> kat;
+        if (kat > 0)
+        {
+            for (int i = 0; i < kat; i++)
+            {
+                kopia = orginal;
+                for (int i = 0; i < 4; i++)
+            kopia_wirnika[i] = orginal_wirnika[i];
+                obrot(1);
+            obrot_rotrow();
+                zapisz();
+                Lacze.Rysuj();
+                usleep(CZAS);
+            }
+        }
+        else
+        {
+            for (int i = 0; i > kat; i--)
+            {
+                kopia = orginal;
+                obrot(-1);
+               obrot_rotrow();
+                zapisz();
+                Lacze.Rysuj();
+                usleep(CZAS);
+            }
+        }
+
+        break;
+        case 'm':
+        {
+
+        } break;
+        case 'k':
+        {} break;
+    default:
+    {
+    cout<<"Bledna opcja"<<endl;}
+        break;
+    }
+}
+
+void Drone::prosta(double droga)
+{
+    Vector3D nastepny = kopia.wez_srodek();
+    nastepny[2] = 0;
+    droga_drona.push_back(nastepny);
+    nastepny[2] = 100;
+    droga_drona.push_back(nastepny);
+    nastepny[0] += droga * cos(kat * M_PI / 180);
+    nastepny[1] += droga * sin(kat * M_PI / 180);
+    droga_drona.push_back(nastepny);
+    nastepny[2] = 0;
+    droga_drona.push_back(nastepny);
+
+    std::fstream plik;
+
+    plik.open("../datasets/droga.dat", std::ios::out);
+    for (int i = 0; i < (int)droga_drona.size(); i++)
     {
 
-        ObrotDrona(5);
-        usleep(100000);
-        Lacze.Rysuj();
+        plik << droga_drona[i] << std::endl;
     }
-    // KatOr_st -= 5;
-
-    //-------------------------------------
-    // Lot do przodu ...
-    //
-    Vector<3> lot;
-    lot[0] = X / 50;
-    lot[1] = Y / 50;
-    cout << "Lot do przodu ... " << endl;
-    for (; x_dron <= 50; x_dron += 1, y_dron += 1)
-    {
-
-        ruch(lot, 0, 0);
-        usleep(100000);
-        Lacze.Rysuj();
-    }
-    x_dron -= 1, y_dron -= 1;
-
-    //-------------------------------------
-    // Opadanie ...
-    //
-    Vector<3> opadanie;
-    opadanie[2] = -2;
-    cout << "Opadanie ... " << endl;
-    for (; z_dron >= 0; z_dron -= 2)
-    {
-
-        ruch(opadanie, 0, 0);
-        usleep(100000); // 0.1 ms
-        Lacze.Rysuj();
-    }
+    plik.close();
 }

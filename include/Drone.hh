@@ -2,26 +2,31 @@
 #include "lacze_do_gnuplota.hh"
 #include "Cuboid.hh"
 #include "Prism.hh"
+#include <unistd.h> // biblioteka dla usleep
+#define CZAS 20000
+
 
 class Drone
 {
-int id;
-Vector <3> droga;
-Matrix3x3 mac;
-Cuboid  *korpus;
-Prism *rotor[4];
+   std::vector<Vector3D> droga_drona;
+    PzG::LaczeDoGNUPlota &Lacze;
+    Cuboid orginal;
+    Cuboid kopia;
+    Matrix3x3 obr;
+    Vector3D droga;
+    double kat;
+    int index; 
+      Prism orginal_wirnika[4];
+    Prism kopia_wirnika[4];
 public:
 
-//Drone(int id=0);
-Drone ();
-void ruch(Vector<3>droga, double katOZ, double katOY);
-void obrot(double kat);
-void ZapisWspolrzednychDoStrumieniaProstopadloscianu(std::ostream &Strm, Matrix3x3 &mac, Vector<3> &droga, Cuboid &korpus);
-void ZapisWspolrzednychDoStrumieniaProstopadloscianu(std::ostream &Strm, Vector<3> &droga, Cuboid &korpus);
-bool ZapisWspolrzednychDoPlikuProstopadloscianu(const char *NazwaPliku, Matrix3x3 &mac, Vector<3> &droga, Cuboid &korpus);
-bool ZapisWspolrzednychDoPlikuProstopadloscianu(const char *NazwaPliku, Vector<3> &droga, Cuboid &korpus);
-void AnimacjaLotuDrona(PzG::LaczeDoGNUPlota &Lacze, double X, double Y);
-void ObrotDrona(double kat);
+  
+  Drone(int index,PzG::LaczeDoGNUPlota &LaczeVector3D, Vector3D pozycja);
+  void animacja(double droga);
+  void przesun(double droga);
+  void obrot(double kat);
+  void zapisz();
+  void sterowanie();
+  void prosta(double droga);
+  void obrot_rotrow(); 
 };
-std::ostream &operator<<(std::ostream &Strm,
-                         Drone &dron);
