@@ -4,53 +4,44 @@ using namespace std;
 #include <vector>
 #include <fstream>
 #include <string>
-#include "matrix.hh"
-#include "vector.hh"
-#include "size.hh"
+
 #include "Matrix3x3.hh"
-// #include "vector3D.hh"
-#include "lacze_do_gnuplota.hh"
+#include "vector3D.hh"
+
 class GeoSolid
 {
 protected:
-    vector<Vector<3>> pkt1;
-    Vector<3> srodek;
-    double katOZ;
-    double katOY;
-    string NazwaPlikuCzyt;
-    string NazwaPlikuPis;
+Vector3D *wymiary;
+ std::vector<Vector3D> pkt1;
+ Vector3D srodek;
+ std::string NazwaPlikuPis;
+ public:
 
-    Vector<3> translacja;
+  Vector3D &operator[](int index)
+  {
+    return pkt1[index];
+}
+  Vector3D operator[](int index)const{
+    return pkt1[index];
+}
 
-public:
-    Vector<3> operator[](int Ind) const { return pkt1[Ind]; } //wypisywanie
+ void ustaw_srodek(Vector3D srodek){
+    this->srodek = srodek;
+}
+ void ustaw_nazwe(std::string NazwaPlikuPis){
+    this->NazwaPlikuPis = NazwaPlikuPis;
+}
+ Vector3D wez_srodek() const{
+    return srodek;
+}
 
-    Vector<3> &operator[](int Ind) { return pkt1[Ind]; } //wpisywanie
-    void ObrotOZ(double katOZ /*Matrix3x3 &macierz*/);
-    void trans(const Vector<3> &vec);
-    void zapis();
-    //GeoSolid operator+(Vector<3> wektor);
-    GeoSolid() {}
+ std::string wez_nazwe() const{
+    return NazwaPlikuPis;
+}
 
-    GeoSolid(const GeoSolid &Prost)
-    {
-        pkt1 = Prost.pkt1;
-        srodek = Prost.srodek;
-        katOZ = Prost.katOZ;
-        katOY = Prost.katOY;
-        translacja = Prost.translacja;
-    }
+ void przesun(Vector3D translacja);
+ void obrot(Matrix3x3 mac);
 
-    GeoSolid operator=(const GeoSolid &Prost)
-    {
-        pkt1 = Prost.pkt1;
-        srodek = Prost.srodek;
-        katOZ = Prost.katOZ;
-        katOY = Prost.katOY;
-        translacja = Prost.translacja;
-        return *this;
-    }
-
-    void set_katOZ(double kat) { katOZ = +kat; }
-    void set_katOY(double kat) { katOY = +kat; }
+ void zapisz();
+ ~GeoSolid(){free(wymiary);}
 };

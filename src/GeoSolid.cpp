@@ -1,36 +1,50 @@
 #include "GeoSolid.hh"
 
-/*FUnkjca trans realizuje translacje bryły geometrycznej
-Argumenty: 
-vec - wektor przesuniecia
-pkt1 - tablica wierzchołków bryły */
-void GeoSolid::trans(const Vector<3> &vec)
+
+
+void GeoSolid::przesun(Vector3D translacja)
 {
     for (int i = 0; i < (int)pkt1.size(); i++)
     {
-        pkt1[i] = pkt1[i] + vec;
+        pkt1[i] = pkt1[i] + translacja;
     }
+    srodek = srodek + translacja;
 }
 
-void GeoSolid::ObrotOZ(double katOZ /*Matrix3x3 &macierz*/)
+void GeoSolid::obrot(Matrix3x3 mac)
 {
-
     for (int i = 0; i < (int)pkt1.size(); i++)
     {
-        pkt1[i] = (macierz_obrot_z(katOZ)*((pkt1[i] ))) ;
+        pkt1[i] = (mac * pkt1[i]);
     }
+    srodek=mac*srodek;
 }
 
-void GeoSolid::zapis()
+void GeoSolid::zapisz()
 {
-    ofstream plik;
-    plik.open(NazwaPlikuPis);
-    for (int i = 0; i < (int)pkt1.size(); i++)
+    std::fstream plik;
+    double tab[] = {0, 0, (*wymiary)[2] / 2};
+    Vector3D translacja(tab);
+
+    plik.open(NazwaPlikuPis, std::ios::out);
+
+    for (int i = 0; i < (int)pkt1.size(); i += 2)
     {
-        if (i % 2 == 0)
-            plik << endl;
-        plik << pkt1[i] << endl;
+        plik << srodek + translacja << std::endl;
+        for (int j = 0; j < 2; j++)
+        {
+            plik << pkt1[j + i] << std::endl;
+        }
+        plik << srodek - translacja << std::endl
+             << std::endl;
     }
+
+    plik << srodek + translacja << std::endl;
+    for (int j = 0; j < 2; j++)
+    {
+        plik << pkt1[j] << std::endl;
+    }
+    plik << srodek - translacja << std::endl
+         << std::endl;
     plik.close();
 }
-
