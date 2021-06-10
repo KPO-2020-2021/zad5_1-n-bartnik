@@ -1,46 +1,46 @@
 #include "Scene.hh"
 using namespace std;
 
-Scene::Scene(double l, double w, double h, string NazwaPikuCzyt, string NazwaPlikuPis)
+Scene::Scene()
 {
-    this->NazwaPlikuCzyt = NazwaPlikuCzyt;
-    this->NazwaPlikuPis = NazwaPlikuPis;
-    Vector<3> tmp;
-    int m = 0;
-    k = 0;
-    for (int i = -l / 2; i <= l / 2; i += 50)
+
+    Lacze.ZmienTrybRys(PzG::TR_3D);
+    Lacze.UstawZakresY(-155, 155);
+    Lacze.UstawZakresX(-155, 155);
+    Lacze.UstawZakresZ(-155, 155);
+
+    double tab_wymiary[3] = {310, 310, 0};
+    Vector<3> kwadrat(tab_wymiary);
+    plaszczyzna = new Ground(kwadrat, 20);
+    Lacze.DodajNazwePliku(plaszczyzna->wez_nazwe().c_str(), PzG::RR_Ciagly, 2);
+    plaszczyzna->zapisz();
+    for (int i = 0; i < 2; i++)
     {
-        for (int j = -w / 2; j <= w / 2; j += 50)
-        {
-            tmp[0] = i;
-            tmp[1] = j;
-            if (m % 5 == 0)
-                tmp[2] = h;
-            wierzcholki.push_back(tmp);
-            m++;
-        }
-        k++;
+        double pozycja[3]{(double)(rand() % 220 - 110), (double)(rand() % 22 - 110), 25};
+        TabDronow[i] = new Drone(i, Lacze, pozycja);
+        TabDronow[i]->zapisz();
     }
-    ofstream plik;
-    plik.open(NazwaPikuCzyt);
-    for (int i = 0; i < (int)wierzcholki.size(); i++)
-    {
-        if (i % k == 0)
-            plik << endl;
-        plik << wierzcholki[i] << endl;
-    }
-    plik.close();
+    Lacze.Rysuj();
 }
 
-void Scene::zapis()
+void Scene::Rysuj()
 {
-    ofstream plik;
-    plik.open(NazwaPlikuPis);
-    for (int i = 0; i < (int)wierzcholki.size(); i++)
+    Lacze.Rysuj();
+}
+
+bool Scene::menu()
+{
+    cout << "Wybierz aktywnego drona (0 lub 1)" << endl;
+    cout << "Inny numer konczy program" << endl;
+    int nr;
+    cin >> nr;
+    if (nr < 2)
     {
-        if (i % k == 0)
-            plik << endl;
-        plik << wierzcholki[i] << endl;
+        TabDronow[nr]->sterowanie();
     }
-    plik.close();
+    else
+    {
+        return false;
+    }
+    return true;
 }

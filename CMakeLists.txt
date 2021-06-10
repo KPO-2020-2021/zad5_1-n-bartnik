@@ -48,6 +48,7 @@ src/Matrix3x3.cpp
  src/vector.cpp
  src/lacze_do_gnuplota.cpp
   src/Scene.cpp
+    src/Ground.cpp
 )
 set(TESTFILES        # All .cpp files in tests/
     tests/main.cpp
