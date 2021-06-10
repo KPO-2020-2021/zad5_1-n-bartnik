@@ -12,14 +12,11 @@
 using namespace std;
 class Prism : public GeoSolid
 {
-double KatOrient;
-Vector <3> polozenie; 
+
+
 public:
-    Prism(){};
 
-    Prism(Vector<3> pkt, double h, double w, double d);
-    Vector<3> TransDoUklRodzica(const Vector <3> &pkt1) const;
-    //void rysuj(PzG::LaczeDoGNUPlota &Lacze);
+    Prism(Vector3D srodek=Vector3D(), double d=10, double r=15, string NazwaPlikuPis = "..datasets/Rotor.dat");
+    ~Prism() { free(wymiary); };
+    
 };
-
-std::ostream &operator<<(std::ostream &Strm, const Prism &Pr);
