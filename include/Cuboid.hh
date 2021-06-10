@@ -10,14 +10,11 @@
 using namespace std;
 class Cuboid : public GeoSolid
 {
-    double katOrient;
 
 public:
-    Cuboid(){};
-    Cuboid(Vector<3> pkt, double h, double w, double d, string NazwaPlikuCzyt, string NazwaPlikuPis);
-    double StNaRad(double katOrient) { return katOrient * M_PI / 180; }
-    Cuboid operator+(Vector<3> wektor);
+
+
+    Cuboid(Vector<3> srodek=Vector3D(), double h=50, double w=50, double d=50, string NazwaPlikuPis="../datasets/Cuboid.dat");
+ ~Cuboid(){free(wymiary);}
 };
 
-std::ostream &operator<<(std::ostream &Strm,
-                         const Cuboid &Pr);
