@@ -5,6 +5,7 @@
 #include "../include/Cuboid.hh"
 #include "../include/matrix.hh"
 #include "../include/size.hh"
+#include "../include/GeoSolid.hh"
 
 TEST_CASE("konstruktor parametryczny")
 {
@@ -112,17 +113,7 @@ TEST_CASE("operator porownania")
     CHECK(wektor1 == wektor2);
 }
 
-// TEST_CASE("mierzenie odległosci")
-// {
-//     double tab1[3]={1,2,3};
-//     double wynik;
-//     Vector<3> wektor1(tab1);
-//     Vector<3> wektor2(tab1);
 
-//     wynik = wektor1.spr(wektor2) ;
-
-//     CHECK(wynik == 0);
-// }
 
 /********************MACIERZ**********************/
 
@@ -170,20 +161,20 @@ TEST_CASE("konstruktor parametryczny")
 {
     string nazwa, nazwa1;
     double tab0[3]={0,0,0};
-    double tab1[3] = {-5, -10, -15};
-    double tab2[3] = {-5, 10, -15};
+    double tab1[3] = {-5, 10, 15};
+    double tab2[3] = {5, 10, 15};
     double tab3[3] = {5, 10, -15};
-    double tab4[3] = {-5, 10, 15};
+    double tab4[3] = {5, -10, 15};
 
-    double tab5[3] = {5, 10, 15};
+    double tab5[3] = {5, -10, -15};
     double tab6[3] = {-5, -10, 15};
-    double tab7[3] = {5, -10, 15};
-    double tab8[3] = {5, -10, -15};
+    double tab7[3] = {-5, -10, -15};
+    double tab8[3] = {-5, 10, -15};
 
     Vector<3> wektor(tab0), wektor1(tab1), wektor2(tab2), wektor3(tab3);
     Vector<3> wektor4(tab4), wektor5(tab5), wektor6(tab6), wektor7(tab7), wektor9(tab8);
     double h = 10, w = 20, p = 30;
-    Cuboid Pr(wektor, h, w, p, nazwa, nazwa1);
+    Cuboid Pr(wektor, h, w, p);
 
     CHECK(Pr[0] == wektor1);
     CHECK(Pr[1] == wektor9);
@@ -195,36 +186,38 @@ TEST_CASE("konstruktor parametryczny")
     CHECK(Pr[7] == wektor7);
 }
 
-TEST_CASE("konstruktor bezparametryczny")
-{
+// TEST_CASE("konstruktor bezparametryczny")
+// {
 
-    Cuboid Pr;
-    Vector<3> wektor;
-    CHECK(Pr[0] == wektor);
-    CHECK(Pr[1] == wektor);
-    CHECK(Pr[2] == wektor);
-    CHECK(Pr[3] == wektor);
-    CHECK(Pr[4] == wektor);
-    CHECK(Pr[5] == wektor);
-    CHECK(Pr[6] == wektor);
-    CHECK(Pr[7] == wektor);
-}
+//     Cuboid Pr;
+//     Vector<3> wektor;
+//     CHECK(Pr[0] == wektor);
+//     CHECK(Pr[1] == wektor);
+//     CHECK(Pr[2] == wektor);
+//     CHECK(Pr[3] == wektor);
+//     CHECK(Pr[4] == wektor);
+//     CHECK(Pr[5] == wektor);
+//     CHECK(Pr[6] == wektor);
+//     CHECK(Pr[7] == wektor);
+// }
 
-TEST_CASE("przesuniecie o wektor")
-{
-    double tab[3] = {20, 30, 40};
-    Cuboid Pr;
-    Vector<3> wektor(tab);
-    Pr = Pr + wektor;
-    CHECK(Pr[0] == wektor);
-    CHECK(Pr[1] == wektor);
-    CHECK(Pr[2] == wektor);
-    CHECK(Pr[3] == wektor);
-    CHECK(Pr[4] == wektor);
-    CHECK(Pr[5] == wektor);
-    CHECK(Pr[6] == wektor);
-    CHECK(Pr[7] == wektor);
-}
+// TEST_CASE("przesuniecie o wektor")
+// {
+//     double tab[3] = {20, 30, 40};
+//     Cuboid Pr;
+//     Vector<3> wektor(tab);
+//     Pr = Pr + wektor;
+//     CHECK(Pr[0] == wektor);
+//     CHECK(Pr[1] == wektor);
+//     CHECK(Pr[2] == wektor);
+//     CHECK(Pr[3] == wektor);
+//     CHECK(Pr[4] == wektor);
+//     CHECK(Pr[5] == wektor);
+//     CHECK(Pr[6] == wektor);
+//     CHECK(Pr[7] == wektor);
+// }
+
+
 
 // TEST_CASE("obrot wokol osi OX")
 // {
@@ -284,12 +277,82 @@ TEST_CASE("przesuniecie o wektor")
 //     CHECK(Pr[7] == wektor);
 // }
 
-TEST_CASE("prostopadloscian - wyświetlanie")
-{
-    Cuboid Pr;
+// TEST_CASE("prostopadloscian - wyświetlanie")
+// {
+//     Cuboid Pr;
 
-    std::ostringstream StrmWyj;
-    StrmWyj << Pr;
-    std::cout << StrmWyj.str();
-    CHECK("0 0 0 \n0 0 0 \n\n""0 0 0 \n0 0 0 \n\n""0 0 0 \n0 0 0 \n\n0 0 0 \n0 0 0 \n\n" == StrmWyj.str());
-}
+//     std::ostringstream StrmWyj;
+//     StrmWyj << Pr;
+//     std::cout << StrmWyj.str();
+//     CHECK("0 0 0 \n0 0 0 \n\n""0 0 0 \n0 0 0 \n\n""0 0 0 \n0 0 0 \n\n0 0 0 \n0 0 0 \n\n" == StrmWyj.str());
+// }
+
+/****************************DRONE****************************/
+
+// TEST_CASE("dron - konstruktor parametryczny")
+// {
+//     string nazwa, nazwa1;
+//     double tab0[3]={0,0,0};
+//     double tab1[3] = {-5, -10, -15};
+//     double tab2[3] = {-5, 10, -15};
+//     double tab3[3] = {5, 10, -15};
+//     double tab4[3] = {-5, 10, 15};
+
+//     double tab5[3] = {5, 10, 15};
+//     double tab6[3] = {-5, -10, 15};
+//     double tab7[3] = {5, -10, 15};
+//     double tab8[3] = {5, -10, -15};
+
+//     Vector<3> wektor(tab0), wektor1(tab1), wektor2(tab2), wektor3(tab3);
+//     Vector<3> wektor4(tab4), wektor5(tab5), wektor6(tab6), wektor7(tab7), wektor9(tab8);
+//     double h = 10, w = 20, p = 30;
+//     Cuboid Pr(wektor, h, w, p, nazwa, nazwa1);
+
+//     CHECK(Pr[0] == wektor1);
+//     CHECK(Pr[1] == wektor9);
+//     CHECK(Pr[2] == wektor2);
+//     CHECK(Pr[3] == wektor3);
+//     CHECK(Pr[4] == wektor4);
+//     CHECK(Pr[5] == wektor5);
+//     CHECK(Pr[6] == wektor6);
+//     CHECK(Pr[7] == wektor7);
+// }
+
+// TEST_CASE("przesuniecie o wektor")
+// {
+//     Vector<3> wek;
+//     double tab[3] = {20, 30, 40}, h =10,w=10,d=10;
+//     Cuboid Pr(wek, h, w, d);
+//     Vector<3> wektor(tab);
+//     Pr = Pr + wektor;
+//     CHECK(Pr[0] == wektor);
+//     CHECK(Pr[1] == wektor);
+//     CHECK(Pr[2] == wektor);
+//     CHECK(Pr[3] == wektor);
+//     CHECK(Pr[4] == wektor);
+//     CHECK(Pr[5] == wektor);
+//     CHECK(Pr[6] == wektor);
+//     CHECK(Pr[7] == wektor);
+// }
+
+/****************************GEOSOLID****************************/
+
+// TEST_CASE("translacja")
+// {
+//     Vector<3> wektor;
+//    cout << "1"<< endl;
+//     wektor[0] =1;
+//     cout << "2"<< endl;
+//     wektor[1] =1;
+//     cout << "3"<< endl;
+//     wektor[2] =1;
+//     cout << "4"<< endl;
+//     GeoSolid Pr(Pr);
+//     //Geosolid
+//     cout << "5"<< endl;
+//     Pr.przesun(wektor);
+//     cout << "6"<< endl;
+//     //CHECK(Pr[0] == wektor);
+//     cout << "2"<< endl;
+// }
+
