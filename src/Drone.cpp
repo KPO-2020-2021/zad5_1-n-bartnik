@@ -13,6 +13,7 @@ Drone::Drone(int index, PzG::LaczeDoGNUPlota &Lacze, Vector3D pozycja) : Lacze(L
     Lacze.DodajNazwePliku(orginal.wez_nazwe().c_str(), PzG::RR_Ciagly, 2);
     for (int i = 0; i < 4; i++)
         Lacze.DodajNazwePliku(orginal_wirnika[i].wez_nazwe().c_str(), PzG::RR_Ciagly, 2);
+         /*do kopii przypisywany jest orginał, żeby nie musieć pracować na orygnałach*/
     kopia = orginal;
 
     kopia.przesun(pozycja);
@@ -24,7 +25,13 @@ Drone::Drone(int index, PzG::LaczeDoGNUPlota &Lacze, Vector3D pozycja) : Lacze(L
 
     this->droga = this->droga + pozycja;
 }
+/*!
+    \brief
+    *Animacja lotu drona. 
+    *Do funkcje wysyłamy wektor drogi, a w nim tworzymy drogę wypadkową, do której współrzędniej z przypisujemy drogę włąściwą.
+    *Następnie przesuwamy i obracamy drona (wstępny obrót o 0 stopni)
 
+*/
 void Drone::animacja(double droga)
 {
     Vector3D droga_o;
@@ -34,7 +41,13 @@ void Drone::animacja(double droga)
     kopia.obrot(obr);
     kopia.przesun(this->droga);
 }
+/*!
+    \brief
+    *Funkcja przesunięcia - przesun. 
+    *Do funkcje wysyłamy wektor drogi, a w nim tworzymy drogę wypadkową, do której współrzędniej z przypisujemy drogę włąściwą przemnożoną przez funkcję trygonometryczną zgodnie z instrukcją do zadania.
+    *Następnie przesuwamy drona poprzez dodanie drogi i drogi_pom do siebie i obracamy drona (wstępny obrót o 0 stopni)
 
+*/
 void Drone::przesun(double droga)
 {
     Vector3D droga_o;
@@ -45,6 +58,13 @@ void Drone::przesun(double droga)
     kopia.przesun(this->droga);
 }
 
+/*!
+    \brief
+    *Funkcja obrotu - obrot. 
+    *Do funkcje wysyłamy kat, a w nim tworzymy macierz wypadkową, do której przypisujemy macierz pomocniczą przemnożoną przez funkcję macierz_obrot_z (o zadany kąt wokół osi OZ).
+    *Następnie przesuwamy drona o wektor zerowy i obracamy drona (o wyliczony kąt obr)
+
+*/
 void Drone::obrot(double kat)
 {
     this->kat += kat;
@@ -53,12 +73,19 @@ void Drone::obrot(double kat)
     kopia.obrot(obr);
     kopia.przesun(this->droga);
 }
+/*!
+    \brief
+    *Funkcja obrotu rotorów - obrot_rotorow. 
+    *W funkcji deklarowany jest kąt początkowy, do którego dodawana jest 2. Następnie tworzona jest macierz pomocnicza. Po wymnożeniu jej wokół osi OZ w pętli każdy rotor jest obracany
+    *za pomocą funkcji obrot o zadaną macierz i przesuwany.
+
+*/
 void Drone::obrot_rotrow()
 {
     static int kat = 0;
-    kat += 3;
+    kat += 2;//obrot poczatkowy
     if (kat == 360)
-        kat = 0;
+        kat = 0; //360==0
 
     Matrix3x3 nowa;
     nowa = nowa * macierz_obrot_z(kat);
@@ -73,6 +100,8 @@ void Drone::obrot_rotrow()
     }
 }
 
+
+
 void Drone::zapisz()
 {
     kopia.zapisz();
@@ -80,6 +109,18 @@ void Drone::zapisz()
         kopia_wirnika[i].zapisz();
 }
 
+
+/*!
+    \brief
+    *Funkcja sterowanie
+    *Umożliwia sterowanie dronem oraz zapewnia użytkownikowi menu 
+    *Umożliwia wybranie obrotu lub przesunięcia drona. Po wybraniu odpowiedniej opcji, realizuje ją.
+    *Gdy użytkownik wybierze opcję p, musi podać drogę przesunięcia, rysuje drogę w gnuplocie za pomocą funkcji prosta, a następnie przypisuje oryginał korpusu i wirników do kopii. 
+    *Za pomocą funkcji animacja przesuwa drona o 1 do góry w czasie (usesleep) 100 razy i obraca rotory.
+    *Gdy użytkownik wybierze opcję o - obrót, musi podać kąt obrotu w stopniach. W zależności od podanego kąta, dron obraca się o 1 lub o -1 tyle razy, ile jednostek zmieści się w zadanym kącie. 
+    *Do kopii przypisywany jest oryginał korpusu i rotorów, rotory obracają się też. Wszystko to w czasie (usleep)
+    * 
+*/
 void Drone::sterowanie()
 {
     double droga;
@@ -97,18 +138,20 @@ void Drone::sterowanie()
     case 'p':
         cout << "Podaj wektor przelotu :";
         cin >> droga;
+         /*rysuje droge przelotu*/
         prosta(droga);
         Lacze.DodajNazwePliku("../datasets/droga.dat", PzG::RR_Ciagly, 2);
+        /*Wykonuje 100 małych ruchów*/
         for (int i = 0; i < 100; i++)
         {
             kopia = orginal;
             for (int j = 0; j < 4; j++)
                 kopia_wirnika[j] = orginal_wirnika[j];
-            animacja(1);
+            animacja(1);//przesunięcie z animacja o 1
            obrot_rotrow();
             zapisz();
             Lacze.Rysuj();
-            usleep(CZAS);
+            usleep(CZAS);//Zapewnia przesunięcie nie natychmiastowe
         }
 
         for (int i = 0; i < droga; i++)
@@ -116,13 +159,15 @@ void Drone::sterowanie()
             kopia = orginal;
             for (int j = 0; j < 4; j++)
                 kopia_wirnika[j] = orginal_wirnika[j];
-            przesun(1);
+            przesun(1);//przesunięcie o 1
             obrot_rotrow();
             zapisz();
             Lacze.Rysuj();
-            usleep(CZAS);
+            usleep(CZAS);//Zapewnia przesunięcie nie natychmiastowe
         }
 
+
+ /*opadanie*/
         for (int i = 0; i < 100; i++)
         {
             kopia = orginal;
@@ -137,6 +182,7 @@ void Drone::sterowanie()
         Lacze.UsunOstatniaNazwe();
         break;
     case 'o':
+    /*obrót o 1 lub -1 powtarzany tyle razy ile 1 zmieści się w kat*/
         cout << "Podaj kat obrotu:";
         cin >> kat;
         if (kat > 0)
@@ -180,6 +226,14 @@ void Drone::sterowanie()
     }
 }
 
+
+/*!
+    \brief
+    *Funkcja prosta
+    *Tworzy prostą -  drogę drona na podstawie dostarczonej do niej drogi.
+    *Do współrzędniej Z przypisuje wartość 150 i wstawia tę współrzędną na koniec listy. Współrzędne X, Y oblicza na podstawie wzoru podanego w treści zadania i również wstawia do kontenera wektora. Następnie zeruje współrzędną Z i wstawia ją na koniec listy
+    *Później otwiera plik drogi i zapisuje do niej każdą obliczoną współrzędną w pętli
+*/
 void Drone::prosta(double droga)
 {
     Vector3D nastepny = kopia.wez_srodek();
